@@ -3,7 +3,7 @@
         SECTION .text		
 	GLOBAL my_strchr
 
-my_strchr:
+strchr:
 					;rdi is the base recuperation arguments
 	mov rcx, 0 			;taking a couter (rcx can be an argument) and setting it to zero
 	
