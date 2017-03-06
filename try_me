@@ -1,0 +1,16 @@
+#!/usr/bin/zsh
+##shell for trying the main test
+
+make fclean;
+make;
+rm -f asm_test;
+gcc test_func.c -o asm_test;
+tput setaf 2; tput bold
+echo "\n\nASM TEST\n";
+tput sgr0
+LD_PRELOAD=./libasm.so ./asm_test $@;
+tput setaf 2; tput bold
+echo "\nASM END\n";
+tput sgr0
+make fclean;
+rm -f asm_test;
