@@ -5,7 +5,7 @@
 ## Login   <puilla_e@epitech.net>
 ## 
 ## Started on  Mon Jan 30 13:49:30 2017 Edouard Puillandre
-## Last update Mon Mar  6 20:15:39 2017 puilla_e
+## Last update Mon Mar  6 20:59:18 2017 puilla_e
 ##
 
 ASM	= nasm -f elf64 
@@ -16,7 +16,7 @@ RM	= rm -f
 
 LIBNAME	= libasm.so
 
-LIBSRC	= my_strlen.asm
+LIBSRC	= minilib.asm
 
 LIBOBJ	= $(LIBSRC:.asm=.o)
 
