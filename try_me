@@ -11,6 +11,11 @@ tput sgr0
 LD_PRELOAD=./libasm.so ./asm_test $@;
 tput setaf 2; tput bold
 echo "\nASM END\n";
+echo "\nEXPECTED\n";
+tput sgr0
+./asm_test $@;
+tput setaf 2; tput bold
+echo "\nEXPECTED END\n";
 tput sgr0
 make fclean;
 rm -f asm_test;
