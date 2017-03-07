@@ -4,15 +4,13 @@
 	GLOBAL my_memset
 
 my_memset:
-	mov rbx, 1
+	xor rcx, rcx
  				;taking a couter (rcx can be an argument) and setting it to zero
 while1:
-	cmp rbx ,rdx 		;comparison between the byte of rdi + rcx (sil is the fist 8 b\
+	cmp rcx ,rdx 		;comparison between the byte of rdi + rcx (sil is the fist 8 b\
 	je end
-	mov [rdi], sil
-	je end		   			 ;if 0 go to end
-	inc rbx
-	inc rdi				;incrementing counter for next char
+	mov [rdi + rcx], sil
+	inc rcx			;incrementing counter for next char
 	jmp while1	  		 	 ;go back to while
 	
 end:
