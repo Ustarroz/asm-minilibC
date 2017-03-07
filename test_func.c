@@ -17,10 +17,10 @@ int main(int ac, char **av)
 	   av[1], av[2][0], strchr(av[1], av[2][0]));
   if (ac >= 3)
     {
-      //printf("STRNCMP: cmp %s and %s for %d bytes = %d\n",
-      //av[1], av[2], 3, strncmp(av[1], av[2], 3));
       printf("STRNCMP: cmp %s and %s for %d bytes = %d\n",
-      	   av[1], av[2], 0, strncmp(av[1], av[2], 0));
+      av[1], av[2], 3, strncmp(av[1], av[2], 3));
+      printf("STRNCMP: cmp %s and %s for %d bytes = %d\n",
+	     av[1], av[2], 0, strncmp(av[1], av[2], 0));
     }
   printf("STRCASECMP:\n");
   printf("compare abc, abc: %d\n", strcasecmp("abc", "abc"));

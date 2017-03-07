@@ -65,19 +65,19 @@ while_strchr: cmp BYTE[rdi + rcx], sil 		;comparison between the byte of rdi + r
 	jmp while_strchr	  			  ;go back to while
 	
 end_strchr:
-	mov rax, rdi 				;setting the return value to rdi
+	mov rax,rdi 				;setting the return value to rdi
 	ret	 				 ;return rax wich is the value for return
 
 	;; strncmp
 strncmp:
 	xor r8,r8
-	xor rax, rax
+	xor rax,rax
 	cmp rdx,0
 	je end_strncmp
 	
 strncmp_loop:
 	cmp r8,rdx
-	je  end_strncmp_loop	
+	je  end_strncmp_loop
 	cmp byte [rdi+r8],0
 	je  end_strncmp_loop
 	cmp byte [rsi+r8],0
@@ -90,7 +90,7 @@ strncmp_loop:
 	jmp strncmp_loop
 	
 end_strncmp_loop:
-	xor rcx,rcx		
+	xor rcx,rcx
 	mov rcx,[rdi+r8]
 	cmp byte[rsi+r8],cl
 	jge end_strncmp_neg
