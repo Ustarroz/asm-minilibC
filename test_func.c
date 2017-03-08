@@ -20,7 +20,7 @@ int main(int ac, char **av)
       printf("STRNCMP: cmp %s and %s for %d bytes = %d\n",
       av[1], av[2], 3, strncmp(av[1], av[2], 3));
       printf("STRNCMP: cmp %s and %s for %d bytes = %d\n",
-	     av[1], av[2], 0, strncmp(av[1], av[2], 0));
+	     av[1], av[2], 1, strncmp(av[1], av[2], 1));
     }
   printf("STRCASECMP:\n");
   printf("compare abc, abc: %d\n", strcasecmp("abc", "abc"));
