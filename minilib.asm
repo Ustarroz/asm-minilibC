@@ -4,6 +4,7 @@ global strncmp:function
 global strcasecmp:function
 global strchr:function
 global memset:function
+global memcpy:function
 global rindex:function
 section .text
 
@@ -207,3 +208,21 @@ end_rindex_null:
 end_rindex_loop:
 	add rax,rdx
 	ret
+
+
+	;; memcpy
+memcpy:		
+        xor rcx, rcx
+	xor r8, r8
+
+while_memcpy:	
+        cmp rcx, rdx 
+        je end_memcpy
+        mov r8b, [rsi + rcx]
+	mov [rdi + rcx], r8b
+        inc rcx
+        jmp while_memcpy
+
+end_memcpy:
+	mov rax, rdi
+        ret		

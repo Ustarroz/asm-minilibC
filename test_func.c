@@ -181,5 +181,38 @@ int main(int ac, char **av)
   printf("\t\trindex 'd' in abac: %s\n",
 	 res_index ? res_index :"NULL");
 
+  //MEMCPY
+  void *(*my_memcpy)(void *src, void *dest, size_t n);
+  char strcpy[]="hello";
+  char strcpy1[]="hello";
+  char strcpy2[]="hello";
+  char strcpy3[]="hello";
+  char strsrc[]="bonjour";
+
+  printf(GREEN_BOLD_INTENS"MEMCPY:\n"CLEAR);
+  if ((my_memcpy = dlsym(handle, "memcpy")) == NULL)
+    {
+      printf("Can't load memcpy\n");
+      return (0);
+    }
+  printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
+  printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
+	 3, (char *)my_memcpy(strcpy, strsrc, 3));
+  printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
+	 0, (char *)my_memcpy(strcpy1, strsrc, 0));
+  printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
+	 1, (char *)my_memcpy(strcpy1, strsrc, 1));
+
+  printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
+  printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
+	 3, (char *)memcpy(strcpy, strsrc, 3));
+  printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
+	 0, (char *)memcpy(strcpy1, strsrc, 0));
+  printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
+	 1, (char *)memcpy(strcpy1, strsrc, 1));
+
+
+
+  //CLOSE
   dlclose(handle);
 }
