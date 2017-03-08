@@ -1,9 +1,10 @@
 global strlen:function
-global strlen:function	
-global strncmp:function
 global strcmp:function
+global strncmp:function
 global strcasecmp:function
-global strchr:function	
+global strchr:function
+global memset:function
+global rindex:function
 section .text
 
 	;; strlen
@@ -78,15 +79,15 @@ strncmp:
 	je end_strncmp		;left the progr if no byte to compare
 	
 strncmp_loop:
-	cmp r8,rdx		;
+	cmp r8,rdx		;check for end of strncmp
 	je  end_strncmp_loop
-	cmp byte [rdi+r8],0
+	cmp byte [rdi+r8],0	;compare str1 to end
 	je  end_strncmp_loop
-	cmp byte [rsi+r8],0
+	cmp byte [rsi+r8],0	;compare str2 to end
 	je  end_strncmp_loop
 	xor rcx,rcx
-	mov rcx,[rdi+r8]
-	cmp byte [rsi+r8],cl
+	mov rcx,[rdi+r8]	;use rcx to store a byte of str1
+	cmp byte [rsi+r8],cl	;compare byte of str2 (in rdi+r8) and str1
 	jne end_strncmp_loop
 	inc r8
 	jmp strncmp_loop
@@ -169,4 +170,40 @@ case_char:
 	jg end_case_char
 	add rax,32
 end_case_char:
+	ret
+
+	;; memset
+memset:
+	xor rcx, rcx
+	mov rax, rdi
+ 				;taking a couter (rcx can be an argument) and setting it to zero
+loop_memset:			;comparison between the byte of rdi + rcx (sil is the fist 8
+	cmp rcx,rdx
+	je end_memset
+	mov byte [rax+rcx],sil
+	inc rcx			;incrementing counter for next char
+	jmp loop_memset          ;go back to while
+end_memset:
+	ret	 		;return rax wich is the value for return
+
+
+	;; rindex
+rindex:
+	call strlen
+	xor rdx, rdx
+	mov rdx, rax
+	xor rax,rax
+	mov rax, rdi
+rindex_loop:
+	cmp byte [rax+rdx],sil
+	je  end_rindex_loop
+	dec rdx
+	cmp rdx,0
+	jge rindex_loop
+	
+end_rindex_null:	
+	xor rax,rax
+	ret
+end_rindex_loop:
+	add rax,rdx
 	ret

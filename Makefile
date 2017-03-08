@@ -5,12 +5,12 @@
 ## Login   <puilla_e@epitech.net>
 ## 
 ## Started on  Mon Jan 30 13:49:30 2017 Edouard Puillandre
-## Last update Mon Mar  6 20:59:18 2017 puilla_e
+## Last update Wed Mar  8 11:38:44 2017 puilla_e
 ##
 
 ASM	= nasm -f elf64 
 
-CC	= gcc
+LD	= ld
 
 RM	= rm -f
 
@@ -22,7 +22,7 @@ LIBOBJ	= $(LIBSRC:.asm=.o)
 
 $(LIBNAME):
 	$(ASM) $(LIBSRC);
-	$(CC) -shared -o $(LIBNAME) $(LIBOBJ)
+	$(LD) -shared -o $(LIBNAME) $(LIBOBJ)
 
 all: $(LIBNAME)
 

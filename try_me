@@ -4,18 +4,9 @@
 make fclean;
 make;
 rm -f asm_test;
-gcc test_func.c -o asm_test;
-tput setaf 2; tput bold
-echo "\n\nASM TEST\n";
-tput sgr0
-LD_PRELOAD=./libasm.so ./asm_test $@;
-tput setaf 2; tput bold
-echo "\nASM END\n";
-echo "\nEXPECTED\n";
-tput sgr0
+gcc test_func.c -o asm_test -ldl;
+echo "\n\n"
 ./asm_test $@;
-tput setaf 2; tput bold
-echo "\nEXPECTED END\n";
-tput sgr0
+echo "\n\n"
 make fclean;
 rm -f asm_test;
