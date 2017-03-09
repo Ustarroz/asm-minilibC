@@ -5,8 +5,10 @@ global strcasecmp:function
 global strchr:function
 global memset:function
 global memcpy:function
+global memmove:function
 global rindex:function
-global strstr:function	
+global strstr:function
+global strpbrk:function	
 section .text
 
 	;; strlen
@@ -275,4 +277,78 @@ while_cmp_strstr:
 end_null_cmp_strstr:
 	xor rax,rax
 end_cmp_strstr:	
+	ret
+
+	
+	;; memmove
+memmove:
+	mov rcx, rdx
+	xor r8b, r8b
+	cmp rdi,rsi
+	jg while_memmove
+	call memcpy
+	ret
+	
+while_memmove:
+	cmp rcx, 0
+	je end_memmove
+	dec rcx
+	mov r8b, [rsi + rcx]
+	mov [rdi + rcx], r8b
+	jmp while_memmove
+end_memmove:		
+	mov rax, rdi
+        ret
+
+	;; strpbrk
+
+strpbrk:
+	xor rcx, rcx
+	xor r8,r8
+	xor rdx, rdx
+	mov rdx, rsi
+strpbrk_loop:
+	cmp byte [rdx+rcx],0
+	je strpbrk_end
+	xor rsi,rsi
+	mov sil,[rdx+rcx]
+	call index
+	inc rcx
+	cmp rax,0
+	je strpbrk_loop
+	cmp r8,0
+	je strpbrk_replace
+	cmp r8,rax
+	jg strpbrk_replace
+	jmp strpbrk_loop
+strpbrk_replace:
+	xor r8,r8
+	mov r8,rax
+	jmp strpbrk_loop
+	
+strpbrk_end:
+	cmp r8,0
+	je strpbrk_null
+	xor rax,rax
+	mov rax,r8
+	ret
+strpbrk_null:
+	xor rax,rax
+	ret
+
+index:
+	xor rax, rax
+	mov rax, rdi
+	
+index_loop:
+	cmp byte [rax],0
+	je  end_index_null
+	cmp byte [rax],sil
+	je  end_index_loop
+	inc rax
+	jmp index_loop
+
+end_index_null:
+	xor rax, rax
+end_index_loop:
 	ret

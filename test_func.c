@@ -242,6 +242,73 @@ int main(int ac, char **av)
   printf("\t\tstrstr: haystack '%s';needle '%s'; res '%s'\n",
 	 str_str1, str_str2, res_str ? res_str : "NULL");
 
+  //MEMMOVE
+  void *(*my_memmove)(void *src, void *dest, size_t n);
+  char strmemove[]="Memmove can be very useful......";
+  char strmemove1[]="Memmove can be very useful......";
+  char strmemove2[]="Memmove can be very useful......";
+  char strmemove3[]="Memmove can be very useful......";
+  char strmemove4[]="Memmove can be very useful......";
+
+  printf(GREEN_BOLD_INTENS"MEMMOVE:\n"CLEAR);
+  if ((my_memmove = dlsym(handle, "memmove")) == NULL)
+    {
+      printf("Can't load memmove\n");
+      return (0);
+    }
+  printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
+  my_memmove(strmemove1 + 20, strmemove1 + 15, 11);
+  printf("\t\tmove bytes from 20 to 15 for '%s': %s\n",
+	 strmemove, strmemove1);
+  my_memmove(strmemove2 + 15, strmemove2 + 20, 11);
+  printf("\t\tmove 12 bytes from 15 to 20 for '%s': %s\n",
+	 strmemove, strmemove2);
+
+  printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
+  memmove(strmemove3 + 20, strmemove3 + 15, 11);
+  printf("\t\tmove bytes from 20 to 15 for '%s': %s\n",
+	 strmemove, strmemove3);
+  memmove(strmemove4 + 15, strmemove4 + 20, 11);
+  printf("\t\tmove 12 bytes from 15 to 20 for '%s': %s\n",
+	 strmemove, strmemove4);
+
+  //STRPBRK
+  char *strpbrk1="I look in my sentence";
+  char *strpbrk2="Je cherche dans ma phrase";
+  char *strpbrk3="try";
+  char *strpbrk4="look";
+  char *res_strpbrk;
+  char *(*my_strpbrk)(const char *s, const char *accept);
+
+  printf(GREEN_BOLD_INTENS"STRPBRK:\n"CLEAR);
+  if ((my_strpbrk = dlsym(handle, "strpbrk")) == NULL)
+    {
+      printf("Can't load strpbrk\n");
+      return (0);
+    }
+
+  printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
+  res_strpbrk = my_strpbrk(strpbrk1, strpbrk3);
+  printf("\t\tstrpbrk '%s' in '%s': %s\n",
+	 strpbrk3, strpbrk1, res_strpbrk ? res_strpbrk :"NULL");
+  res_strpbrk = my_strpbrk(strpbrk2, strpbrk3);
+  printf("\t\tstrpbrk '%s' in '%s': %s\n",
+	 strpbrk3, strpbrk2, res_strpbrk ? res_strpbrk :"NULL");
+  res_strpbrk = my_strpbrk(strpbrk2, strpbrk4);
+  printf("\t\tstrpbrk '%s' in '%s': %s\n",
+	 strpbrk4, strpbrk2, res_strpbrk ? res_strpbrk :"NULL");
+
+  printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
+  res_strpbrk = strpbrk(strpbrk1, strpbrk3);
+  printf("\t\tstrpbrk '%s' in '%s': %s\n",
+	 strpbrk3, strpbrk1, res_strpbrk ? res_strpbrk :"NULL");
+  res_strpbrk = strpbrk(strpbrk2, strpbrk3);
+  printf("\t\tstrpbrk '%s' in '%s': %s\n",
+	 strpbrk3, strpbrk2, res_strpbrk ? res_strpbrk :"NULL");
+  res_strpbrk = strpbrk(strpbrk2, strpbrk4);
+  printf("\t\tstrpbrk '%s' in '%s': %s\n",
+	 strpbrk4, strpbrk2, res_strpbrk ? res_strpbrk :"NULL");
+
   //CLOSE
   dlclose(handle);
 }
