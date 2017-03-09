@@ -6,6 +6,7 @@ global strchr:function
 global memset:function
 global memcpy:function
 global rindex:function
+global strstr:function	
 section .text
 
 	;; strlen
@@ -226,3 +227,52 @@ while_memcpy:
 end_memcpy:
 	mov rax, rdi
         ret		
+
+	;; strstr
+strstr:
+	xor rcx, rcx
+	xor rdx, rdx
+	mov rdx, rdi
+	
+while_strstr:
+	cmp byte [rdx+rcx], 0
+	je end_null_strstr
+	xor r8,r8
+	mov r8b,[rsi]
+	cmp byte [rdx+rcx],r8b
+	jne redo_loop_strstr
+	mov rdi,rdx
+	add rdi,rcx
+	call cmp_strstr
+	cmp rax,0
+	jne end_strstr
+	inc rcx
+	jmp while_strstr
+redo_loop_strstr:
+	inc rcx
+	jmp while_strstr
+end_null_strstr:
+	xor rax, rax
+end_strstr:	
+	ret
+
+cmp_strstr:
+	xor r8,r8
+	xor rax,rax
+	mov rax,rdi
+
+while_cmp_strstr:
+	cmp byte [rax+r8],0
+	je end_null_cmp_strstr
+	cmp byte [rsi+r8],0
+	je end_cmp_strstr
+	xor r9,r9
+	mov r9b, [rsi+r8]
+	cmp byte [rax+r8],r9b
+	jne end_null_cmp_strstr
+	inc r8
+	jmp while_cmp_strstr
+end_null_cmp_strstr:
+	xor rax,rax
+end_cmp_strstr:	
+	ret

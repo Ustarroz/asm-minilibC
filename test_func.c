@@ -212,6 +212,35 @@ int main(int ac, char **av)
 	 1, (char *)memcpy(strcpy1, strsrc, 1));
 
 
+  //STRSTR
+  char *(*my_strstr)(const char *hay, const char *needle);
+  char str_str1[]="abbcabacab";
+  char str_str2[]="bac";
+  char str_str3[]="cabb";
+  char *res_str;
+
+
+  printf(GREEN_BOLD_INTENS"STRSTR:\n"CLEAR);
+  if ((my_strstr = dlsym(handle, "strstr")) == NULL)
+    {
+      printf("Can't load strstr\n");
+      return (0);
+    }
+  printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
+  res_str = my_strstr(str_str1, str_str2);
+  printf("\t\tstrstr: haystack '%s';needle '%s'; res '%s'\n",
+	 str_str1, str_str2, res_str ? res_str : "NULL");
+  res_str = my_strstr(str_str1, str_str3);
+  printf("\t\tstrstr: haystack '%s';needle '%s'; res '%s'\n",
+	 str_str1, str_str2, res_str ? res_str : "NULL");
+
+  printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
+  res_str = strstr(str_str1, str_str2);
+  printf("\t\tstrstr: haystack '%s';needle '%s'; res '%s'\n",
+	 str_str1, str_str2, res_str ? res_str : "NULL");
+  res_str = strstr(str_str1, str_str3);
+  printf("\t\tstrstr: haystack '%s';needle '%s'; res '%s'\n",
+	 str_str1, str_str2, res_str ? res_str : "NULL");
 
   //CLOSE
   dlclose(handle);
