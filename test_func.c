@@ -205,11 +205,11 @@ int main(int ac, char **av)
 
   printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
   printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
-	 3, (char *)memcpy(strcpy, strsrc, 3));
+	 3, (char *)memcpy(strcpy2, strsrc, 3));
   printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
-	 0, (char *)memcpy(strcpy1, strsrc, 0));
+	 0, (char *)memcpy(strcpy3, strsrc, 0));
   printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
-	 1, (char *)memcpy(strcpy1, strsrc, 1));
+	 1, (char *)memcpy(strcpy3, strsrc, 1));
 
 
   //STRSTR
@@ -232,7 +232,7 @@ int main(int ac, char **av)
 	 str_str1, str_str2, res_str ? res_str : "NULL");
   res_str = my_strstr(str_str1, str_str3);
   printf("\t\tstrstr: haystack '%s';needle '%s'; res '%s'\n",
-	 str_str1, str_str2, res_str ? res_str : "NULL");
+	 str_str1, str_str3, res_str ? res_str : "NULL");
 
   printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
   res_str = strstr(str_str1, str_str2);
@@ -240,7 +240,7 @@ int main(int ac, char **av)
 	 str_str1, str_str2, res_str ? res_str : "NULL");
   res_str = strstr(str_str1, str_str3);
   printf("\t\tstrstr: haystack '%s';needle '%s'; res '%s'\n",
-	 str_str1, str_str2, res_str ? res_str : "NULL");
+	 str_str1, str_str3, res_str ? res_str : "NULL");
 
   //MEMMOVE
   void *(*my_memmove)(void *src, void *dest, size_t n);

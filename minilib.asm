@@ -82,6 +82,7 @@ strncmp:
 	xor rax,rax		;set rax as 0 for the ret
 	cmp rdx,0		;check if the rdx (number of byte to cmp) equal 0
 	je end_strncmp		;left the progr if no byte to compare
+	sub rdx,1
 	
 strncmp_loop:
 	cmp r8,rdx		;check for end of strncmp
@@ -268,9 +269,9 @@ while_cmp_strstr:
 	cmp byte [rax+r8],0
 	je end_null_cmp_strstr
 	cmp byte [rsi+r8],0
+	je end_cmp_strstr
 	xor r9,r9
 	mov r9b, [rsi+r8]
-	je end_cmp_strstr
 	cmp byte [rax+r8],r9b
 	jne end_null_cmp_strstr
 	inc r8
