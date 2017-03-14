@@ -296,7 +296,7 @@ int main(int ac, char **av)
 	 strpbrk3, strpbrk2, res_strpbrk ? res_strpbrk :"NULL");
   res_strpbrk = my_strpbrk(strpbrk2, strpbrk4);
   printf("\t\tstrpbrk '%s' in '%s': %s\n",
-	 strpbrk4, strpbrk2, res_strpbrk ? res_strpbrk :"NULL");
+  strpbrk4, strpbrk2, res_strpbrk ? res_strpbrk :"NULL");
 
   printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
   res_strpbrk = strpbrk(strpbrk1, strpbrk3);
@@ -308,6 +308,45 @@ int main(int ac, char **av)
   res_strpbrk = strpbrk(strpbrk2, strpbrk4);
   printf("\t\tstrpbrk '%s' in '%s': %s\n",
 	 strpbrk4, strpbrk2, res_strpbrk ? res_strpbrk :"NULL");
+
+
+    //STRCSPN
+  char *strcspn1="try in my sentence";
+  char *strcspn2="Je cherche dans ma phrase";
+  char *strcspn3="try";
+  char *strcspn4="look";
+  size_t res_strcspn;
+  size_t (*my_strcspn)(const char *s, const char *accept);
+
+  printf(GREEN_BOLD_INTENS"STRCSPN:\n"CLEAR);
+  if ((my_strcspn = dlsym(handle, "strcspn")) == NULL)
+    {
+      printf("Can't load strcspn\n");
+      return (0);
+    }
+
+  printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
+  res_strcspn = my_strcspn(strcspn1, strcspn3);
+  printf("\t\tstrcspn '%s' in '%s': %lu\n",
+  strcspn3, strcspn1, res_strcspn);
+  res_strcspn = my_strcspn(strcspn2, strcspn3);
+  printf("\t\tstrcspn '%s' in '%s': %lu\n",
+  strcspn3, strcspn2, res_strcspn);
+  res_strcspn = my_strcspn(strcspn2, strcspn4);
+  printf("\t\tstrcspn '%s' in '%s': %lu\n",
+  strcspn4, strcspn2, res_strcspn);
+
+
+  printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
+  res_strcspn = strcspn(strcspn1, strcspn3);
+  printf("\t\tstrcspn '%s' in '%s': %lu\n",
+	 strcspn3, strcspn1, res_strcspn);
+  res_strcspn = strcspn(strcspn2, strcspn3);
+  printf("\t\tstrcspn '%s' in '%s': %lu\n",
+	 strcspn3, strcspn2, res_strcspn);
+  res_strcspn = strcspn(strcspn2, strcspn4);
+  printf("\t\tstrcspn '%s' in '%s': %lu\n",
+	 strcspn4, strcspn2, res_strcspn);
 
   //CLOSE
   dlclose(handle);

@@ -8,7 +8,8 @@ global memcpy:function
 global memmove:function
 global rindex:function
 global strstr:function
-global strpbrk:function	
+global strpbrk:function
+global strcspn:function		
 section .text
 
 	;; strlen
@@ -267,9 +268,9 @@ while_cmp_strstr:
 	cmp byte [rax+r8],0
 	je end_null_cmp_strstr
 	cmp byte [rsi+r8],0
-	je end_cmp_strstr
 	xor r9,r9
 	mov r9b, [rsi+r8]
+	je end_cmp_strstr
 	cmp byte [rax+r8],r9b
 	jne end_null_cmp_strstr
 	inc r8
@@ -351,4 +352,30 @@ index_loop:
 end_index_null:
 	xor rax, rax
 end_index_loop:
+	ret
+
+	;; strcspn
+
+strcspn:
+	xor rdx,rdx
+	xor r8,r8
+	xor rcx,rcx
+	mov rcx,rdi
+	xor rdi,rdi
+	mov rdi,rsi
+strcspn_index_loop:
+	cmp byte [rcx+rdx],0
+	je strcspn_index_end
+	xor rsi,rsi
+	mov sil,[rcx+rdx]
+	call index
+	cmp rax,0
+	jne strcspn_index_end
+	inc r8
+	inc rdx
+	jmp strcspn_index_loop
+	
+strcspn_index_end:
+	xor rax,rax
+	mov rax,r8
 	ret
