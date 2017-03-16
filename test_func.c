@@ -35,6 +35,35 @@ int main(int ac, char **av)
   printf("\t\t'%s' got len of %lu\n", "", strlen(""));
 
 
+  //STRCHR
+  char *(*my_strchr)(const char *s, char c);
+  char *chr1 = "abac";
+  char *chr2 = "ab";
+  char *chr3 = "abbc";
+  char *reschr;
+
+  printf(GREEN_BOLD_INTENS"STRCHR:\n"CLEAR);
+  if ((my_strchr = dlsym(handle, "strchr")) == NULL)
+    {
+      printf("Can't load strchr\n");
+      return (0);
+    }
+  printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
+  reschr = my_strchr(chr1, 'b');
+  printf("\t\tsearch 'b' in 'abac' = %s\n",
+	 reschr ? reschr : "NULL");
+  reschr = my_strchr(chr1, 'f');
+  printf("\t\tsearch 'f' in 'abac' = %s\n",
+	 reschr ? reschr : "NULL");
+
+  printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
+  reschr = strchr(chr1, 'b');
+  printf("\t\tsearch 'b' in 'abac' = %s\n",
+	 reschr ? reschr : "NULL");
+  reschr = strchr(chr1, 'f');
+  printf("\t\tsearch 'f' in 'abac' = %s\n",
+	 reschr ? reschr : "NULL");
+
   //STRCMP
   int (*my_strcmp)(const char *s, const char *s2);
   char *cmp1 = "abac";

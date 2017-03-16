@@ -61,6 +61,8 @@ end_strcmp_neg:
 
 	;; strchr
 strchr:
+	cmp rdi,0
+	je end_strchr_null
 				;rdi is the base recuperation arguments
 	mov rcx, 0 		;taking a couter (rcx can be an argument) and setting it to zero
 	
@@ -68,13 +70,17 @@ while_strchr:
 	cmp BYTE[rdi + rcx], sil ;compare the byte of rdi + rcx and sil (the fist byte of the rdi)
 	je end_strchr
 	cmp byte[rdi + rcx], 0	;comparison between the byte and the \0
-  	je end_strchr		;if 0 go to end
+  	je end_strchr_null		;if 0 go to end
 	inc rcx			;incrementing counter for next char
 	jmp while_strchr	;go back to while
 	
 end_strchr:
 	mov rax,rdi		;setting the return value to rdi
+	add rax,rcx
 	ret			;return rax wich is the value for return
+end_strchr_null:
+	xor rax,rax
+	ret
 
 	;; strncmp
 strncmp:
@@ -216,7 +222,9 @@ end_rindex_loop:
 
 
 	;; memcpy
-memcpy:		
+memcpy:
+	cmp rdi, 0
+	je end_memcpy
         xor rcx, rcx
 	xor r8, r8
 
@@ -234,6 +242,10 @@ end_memcpy:
 
 	;; strstr
 strstr:
+	cmp rdi, 0
+	je end_null_strstr
+	cmp rsi, 0
+	je end_null_strstr
 	xor rcx, rcx
 	xor rdx, rdx
 	mov rdx, rdi
@@ -284,6 +296,10 @@ end_cmp_strstr:
 	
 	;; memmove
 memmove:
+	cmp rdi,0
+	je end_memmove_null
+	cmp rsi,0
+	je end_memmove_null
 	mov rcx, rdx
 	xor r8b, r8b
 	cmp rdi,rsi
@@ -301,10 +317,17 @@ while_memmove:
 end_memmove:		
 	mov rax, rdi
         ret
+end_memmove_null:
+	xor rax,rax
+	ret
 
 	;; strpbrk
 
 strpbrk:
+	cmp rdi,0
+	je strpbrk_null
+	cmp rsi,0
+	je strpbrk_null
 	xor rcx, rcx
 	xor r8,r8
 	xor rdx, rdx
@@ -356,10 +379,13 @@ end_index_loop:
 	ret
 
 	;; strcspn
-
 strcspn:
 	xor rdx,rdx
 	xor r8,r8
+	cmp rdi,0
+	je strcspn_index_end
+	cmp rsi,0
+	je strcspn_index_end
 	xor rcx,rcx
 	mov rcx,rdi
 	xor rdi,rdi
