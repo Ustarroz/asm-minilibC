@@ -246,6 +246,12 @@ strstr:
 	je end_null_strstr
 	cmp rsi, 0
 	je end_null_strstr
+	xor rax,rax
+	mov rax,rdi
+	xor r8,r8
+	mov r8b,[rsi]
+	cmp r8, 0
+	je end_strstr
 	xor rcx, rcx
 	xor rdx, rdx
 	mov rdx, rdi
@@ -253,8 +259,6 @@ strstr:
 while_strstr:
 	cmp byte [rdx+rcx], 0
 	je end_null_strstr
-	xor r8,r8
-	mov r8b,[rsi]
 	cmp byte [rdx+rcx],r8b
 	jne redo_loop_strstr
 	mov rdi,rdx
@@ -278,10 +282,10 @@ cmp_strstr:
 	mov rax,rdi
 
 while_cmp_strstr:
-	cmp byte [rax+r8],0
-	je end_null_cmp_strstr
 	cmp byte [rsi+r8],0
 	je end_cmp_strstr
+	cmp byte [rax+r8],0
+	je end_null_cmp_strstr
 	xor r9,r9
 	mov r9b, [rsi+r8]
 	cmp byte [rax+r8],r9b
