@@ -92,6 +92,96 @@ int main(int ac, char **av)
   printf("\t\tcompare 'abac' with 'abbc' = %d\n",
 	 strcmp(cmp1, cmp3));
 
+  //MEMSET
+  void *(*my_memset)(void *s, int c, size_t n);
+  char str[]="hello";
+  char str1[]="hello";
+  char str2[]="hello";
+  char str3[]="hello";
+
+  printf(GREEN_BOLD_INTENS"MEMSET:\n"CLEAR);
+  if ((my_memset = dlsym(handle, "memset")) == NULL)
+    {
+      printf("Can't load memset\n");
+      return (0);
+    }
+  printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
+  printf("\t\tset 'hello' to 'a' for %d: %s\n",
+	 3, (char *)my_memset(str, 'a', 3));
+  printf("\t\tset 'hello' to 'a' for %d: %s\n",
+	 0, (char *)my_memset(str1, 'a', 0));
+  printf("\t\tset 'hello' to 'a' for %d: %s\n",
+  1, (char *)my_memset(str1, 'a', 1));
+
+  printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
+  printf("\t\tset 'hello' to 'a' for %d: %s\n",
+	 3, (char *)memset(str2, 'a', 3));
+  printf("\t\tset 'hello' to 'a' for %d: %s\n",
+	 0, (char *)memset(str3, 'a', 0));
+  printf("\t\tset 'hello' to 'a' for %d: %s\n",
+	 1, (char *)memset(str3, 'a', 1));
+
+  //MEMCPY
+  void *(*my_memcpy)(void *src, void *dest, size_t n);
+  char strcpy[]="hello";
+  char strcpy1[]="hello";
+  char strcpy2[]="hello";
+  char strcpy3[]="hello";
+  char strsrc[]="bonjour";
+
+  printf(GREEN_BOLD_INTENS"MEMCPY:\n"CLEAR);
+  if ((my_memcpy = dlsym(handle, "memcpy")) == NULL)
+    {
+      printf("Can't load memcpy\n");
+      return (0);
+    }
+  printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
+  printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
+	 3, (char *)my_memcpy(strcpy, strsrc, 3));
+  printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
+	 0, (char *)my_memcpy(strcpy1, strsrc, 0));
+  printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
+	 1, (char *)my_memcpy(strcpy1, strsrc, 1));
+
+  printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
+  printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
+	 3, (char *)memcpy(strcpy2, strsrc, 3));
+  printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
+	 0, (char *)memcpy(strcpy3, strsrc, 0));
+  printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
+	 1, (char *)memcpy(strcpy3, strsrc, 1));
+
+
+  //MEMMOVE
+  void *(*my_memmove)(void *src, void *dest, size_t n);
+  char strmemove[]="Memmove can be very useful......";
+  char strmemove1[]="Memmove can be very useful......";
+  char strmemove2[]="Memmove can be very useful......";
+  char strmemove3[]="Memmove can be very useful......";
+  char strmemove4[]="Memmove can be very useful......";
+
+  printf(GREEN_BOLD_INTENS"MEMMOVE:\n"CLEAR);
+  if ((my_memmove = dlsym(handle, "memmove")) == NULL)
+    {
+      printf("Can't load memmove\n");
+      return (0);
+    }
+  printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
+  my_memmove(strmemove1 + 20, strmemove1 + 15, 11);
+  printf("\t\tmove bytes from 20 to 15 for '%s': %s\n",
+	 strmemove, strmemove1);
+  my_memmove(strmemove2 + 15, strmemove2 + 20, 11);
+  printf("\t\tmove 12 bytes from 15 to 20 for '%s': %s\n",
+	 strmemove, strmemove2);
+
+  printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
+  memmove(strmemove3 + 20, strmemove3 + 15, 11);
+  printf("\t\tmove bytes from 20 to 15 for '%s': %s\n",
+	 strmemove, strmemove3);
+  memmove(strmemove4 + 15, strmemove4 + 20, 11);
+  printf("\t\tmove 12 bytes from 15 to 20 for '%s': %s\n",
+	 strmemove, strmemove4);
+
   //STRNCMP
   int (*my_strncmp)(const char *s, const char *s2, size_t n);
 
@@ -147,36 +237,6 @@ int main(int ac, char **av)
   printf("\t\tcompare 'aba' with 'ABaC' = %d\n",
 	 strcasecmp("aba", "ABaC"));
 
-  //MEMSET
-  void *(*my_memset)(void *s, int c, size_t n);
-  char str[]="hello";
-  char str1[]="hello";
-  char str2[]="hello";
-  char str3[]="hello";
-
-  printf(GREEN_BOLD_INTENS"MEMSET:\n"CLEAR);
-  if ((my_memset = dlsym(handle, "memset")) == NULL)
-    {
-      printf("Can't load memset\n");
-      return (0);
-    }
-  printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
-  printf("\t\tset 'hello' to 'a' for %d: %s\n",
-	 3, (char *)my_memset(str, 'a', 3));
-  printf("\t\tset 'hello' to 'a' for %d: %s\n",
-	 0, (char *)my_memset(str1, 'a', 0));
-  printf("\t\tset 'hello' to 'a' for %d: %s\n",
-  1, (char *)my_memset(str1, 'a', 1));
-
-  printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
-  printf("\t\tset 'hello' to 'a' for %d: %s\n",
-	 3, (char *)memset(str2, 'a', 3));
-  printf("\t\tset 'hello' to 'a' for %d: %s\n",
-	 0, (char *)memset(str3, 'a', 0));
-  printf("\t\tset 'hello' to 'a' for %d: %s\n",
-	 1, (char *)memset(str3, 'a', 1));
-
-
   //RINDEX
   char *str4="abac";
   char *res_index;
@@ -210,36 +270,6 @@ int main(int ac, char **av)
   printf("\t\trindex 'd' in abac: %s\n",
 	 res_index ? res_index :"NULL");
 
-  //MEMCPY
-  void *(*my_memcpy)(void *src, void *dest, size_t n);
-  char strcpy[]="hello";
-  char strcpy1[]="hello";
-  char strcpy2[]="hello";
-  char strcpy3[]="hello";
-  char strsrc[]="bonjour";
-
-  printf(GREEN_BOLD_INTENS"MEMCPY:\n"CLEAR);
-  if ((my_memcpy = dlsym(handle, "memcpy")) == NULL)
-    {
-      printf("Can't load memcpy\n");
-      return (0);
-    }
-  printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
-  printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
-	 3, (char *)my_memcpy(strcpy, strsrc, 3));
-  printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
-	 0, (char *)my_memcpy(strcpy1, strsrc, 0));
-  printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
-	 1, (char *)my_memcpy(strcpy1, strsrc, 1));
-
-  printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
-  printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
-	 3, (char *)memcpy(strcpy2, strsrc, 3));
-  printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
-	 0, (char *)memcpy(strcpy3, strsrc, 0));
-  printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
-	 1, (char *)memcpy(strcpy3, strsrc, 1));
-
 
   //STRSTR
   char *(*my_strstr)(const char *hay, const char *needle);
@@ -270,36 +300,6 @@ int main(int ac, char **av)
   res_str = strstr(str_str1, str_str3);
   printf("\t\tstrstr: haystack '%s';needle '%s'; res '%s'\n",
 	 str_str1, str_str3, res_str ? res_str : "NULL");
-
-  //MEMMOVE
-  void *(*my_memmove)(void *src, void *dest, size_t n);
-  char strmemove[]="Memmove can be very useful......";
-  char strmemove1[]="Memmove can be very useful......";
-  char strmemove2[]="Memmove can be very useful......";
-  char strmemove3[]="Memmove can be very useful......";
-  char strmemove4[]="Memmove can be very useful......";
-
-  printf(GREEN_BOLD_INTENS"MEMMOVE:\n"CLEAR);
-  if ((my_memmove = dlsym(handle, "memmove")) == NULL)
-    {
-      printf("Can't load memmove\n");
-      return (0);
-    }
-  printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
-  my_memmove(strmemove1 + 20, strmemove1 + 15, 11);
-  printf("\t\tmove bytes from 20 to 15 for '%s': %s\n",
-	 strmemove, strmemove1);
-  my_memmove(strmemove2 + 15, strmemove2 + 20, 11);
-  printf("\t\tmove 12 bytes from 15 to 20 for '%s': %s\n",
-	 strmemove, strmemove2);
-
-  printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
-  memmove(strmemove3 + 20, strmemove3 + 15, 11);
-  printf("\t\tmove bytes from 20 to 15 for '%s': %s\n",
-	 strmemove, strmemove3);
-  memmove(strmemove4 + 15, strmemove4 + 20, 11);
-  printf("\t\tmove 12 bytes from 15 to 20 for '%s': %s\n",
-	 strmemove, strmemove4);
 
   //STRPBRK
   char *strpbrk1="I look in my sentence";
@@ -356,26 +356,19 @@ int main(int ac, char **av)
 
   printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
   res_strcspn = my_strcspn(strcspn1, strcspn3);
-  printf("\t\tstrcspn '%s' in '%s': %lu\n",
-  strcspn3, strcspn1, res_strcspn);
+  printf("\t\tstrcspn '%s' in '%s': %lu\n", strcspn3, strcspn1, res_strcspn);
   res_strcspn = my_strcspn(strcspn2, strcspn3);
-  printf("\t\tstrcspn '%s' in '%s': %lu\n",
-  strcspn3, strcspn2, res_strcspn);
+  printf("\t\tstrcspn '%s' in '%s': %lu\n", strcspn3, strcspn2, res_strcspn);
   res_strcspn = my_strcspn(strcspn2, strcspn4);
-  printf("\t\tstrcspn '%s' in '%s': %lu\n",
-  strcspn4, strcspn2, res_strcspn);
-
+  printf("\t\tstrcspn '%s' in '%s': %lu\n", strcspn4, strcspn2, res_strcspn);
 
   printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
   res_strcspn = strcspn(strcspn1, strcspn3);
-  printf("\t\tstrcspn '%s' in '%s': %lu\n",
-	 strcspn3, strcspn1, res_strcspn);
+  printf("\t\tstrcspn '%s' in '%s': %lu\n", strcspn3, strcspn1, res_strcspn);
   res_strcspn = strcspn(strcspn2, strcspn3);
-  printf("\t\tstrcspn '%s' in '%s': %lu\n",
-	 strcspn3, strcspn2, res_strcspn);
+  printf("\t\tstrcspn '%s' in '%s': %lu\n", strcspn3, strcspn2, res_strcspn);
   res_strcspn = strcspn(strcspn2, strcspn4);
-  printf("\t\tstrcspn '%s' in '%s': %lu\n",
-	 strcspn4, strcspn2, res_strcspn);
+  printf("\t\tstrcspn '%s' in '%s': %lu\n", strcspn4, strcspn2, res_strcspn);
 
   //CLOSE
   dlclose(handle);
