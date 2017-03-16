@@ -6,36 +6,26 @@
 #define RED_BOLD_INTENS "\e[1;91m"
 #define CLEAR "\e[0m"
 
-int main(int ac, char **av)
+void	my_strlen_test(void *handle)
 {
-  void *handle;
-
-  printf(GREEN_BOLD_INTENS"ASM TEST\n"CLEAR);
-  if ((handle = dlopen("./libasm.so", RTLD_LAZY)) == NULL)
-    {
-      printf("Can't open lib\n");
-      return (0);
-    }
-
-  //STRLEN
   size_t (*my_strlen)(const char *s);
 
   printf(GREEN_BOLD_INTENS"STRLEN:\n"CLEAR);
   if ((my_strlen = dlsym(handle, "strlen")) == NULL)
     {
       printf("Can't load strlen\n");
-      return (0);
+      return ;
     }
   printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
   printf("\t\t'%s' got len of %lu\n", "My sentence", my_strlen("My sentence"));
   printf("\t\t'%s' got len of %lu\n", "", my_strlen(""));
-
   printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
   printf("\t\t'%s' got len of %lu\n", "My sentence", strlen("My sentence"));
   printf("\t\t'%s' got len of %lu\n", "", strlen(""));
+}
 
-
-  //STRCHR
+void	my_strchr_test(void *handle)
+{
   char *(*my_strchr)(const char *s, char c);
   char *chr1 = "abac";
   char *chr2 = "ab";
@@ -46,25 +36,21 @@ int main(int ac, char **av)
   if ((my_strchr = dlsym(handle, "strchr")) == NULL)
     {
       printf("Can't load strchr\n");
-      return (0);
+      return ;
     }
   printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
   reschr = my_strchr(chr1, 'b');
-  printf("\t\tsearch 'b' in 'abac' = %s\n",
-	 reschr ? reschr : "NULL");
+  printf("\t\tsearch 'b' in 'abac' = %s\n", reschr ? reschr : "NULL");
   reschr = my_strchr(chr1, 'f');
-  printf("\t\tsearch 'f' in 'abac' = %s\n",
-	 reschr ? reschr : "NULL");
-
+  printf("\t\tsearch 'f' in 'abac' = %s\n", reschr ? reschr : "NULL");
   printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
   reschr = strchr(chr1, 'b');
-  printf("\t\tsearch 'b' in 'abac' = %s\n",
-	 reschr ? reschr : "NULL");
+  printf("\t\tsearch 'b' in 'abac' = %s\n", reschr ? reschr : "NULL");
   reschr = strchr(chr1, 'f');
-  printf("\t\tsearch 'f' in 'abac' = %s\n",
-	 reschr ? reschr : "NULL");
-
-  //STRCMP
+  printf("\t\tsearch 'f' in 'abac' = %s\n", reschr ? reschr : "NULL");
+}
+void	my_strcmp_test(void *handle)
+{
   int (*my_strcmp)(const char *s, const char *s2);
   char *cmp1 = "abac";
   char *cmp2 = "ab";
@@ -74,27 +60,21 @@ int main(int ac, char **av)
   if ((my_strcmp = dlsym(handle, "strcmp")) == NULL)
     {
       printf("Can't load strcmp\n");
-      return (0);
+      return ;
     }
   printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
-    printf("\t\tcompare 'abac' with 'abac' = %d\n",
-	 my_strcmp(cmp1, cmp1));
-  printf("\t\tcompare 'abac' with 'ab' = %d\n",
-	 my_strcmp(cmp1, cmp2));
-  printf("\t\tcompare 'abac' with 'abbc' = %d\n",
-	 my_strcmp(cmp1, cmp3));
-
+  printf("\t\tcompare 'abac' with 'abac' = %d\n", my_strcmp(cmp1, cmp1));
+  printf("\t\tcompare 'abac' with 'ab' = %d\n", my_strcmp(cmp1, cmp2));
+  printf("\t\tcompare 'abac' with 'abbc' = %d\n", my_strcmp(cmp1, cmp3));
   printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
-  printf("\t\tcompare 'abac' with 'abac' = %d\n",
-	 strcmp(cmp1, cmp1));
-  printf("\t\tcompare 'abac' with 'ab' = %d\n",
-	 strcmp(cmp1, cmp2));
-  printf("\t\tcompare 'abac' with 'abbc' = %d\n",
-	 strcmp(cmp1, cmp3));
-
-  //MEMSET
+  printf("\t\tcompare 'abac' with 'abac' = %d\n", strcmp(cmp1, cmp1));
+  printf("\t\tcompare 'abac' with 'ab' = %d\n", strcmp(cmp1, cmp2));
+  printf("\t\tcompare 'abac' with 'abbc' = %d\n", strcmp(cmp1, cmp3));
+}
+void	my_memset_test(void * handle)
+{
   void *(*my_memset)(void *s, int c, size_t n);
-  char str[]="hello";
+  char str[] ="hello";
   char str1[]="hello";
   char str2[]="hello";
   char str3[]="hello";
@@ -103,7 +83,7 @@ int main(int ac, char **av)
   if ((my_memset = dlsym(handle, "memset")) == NULL)
     {
       printf("Can't load memset\n");
-      return (0);
+      return ;
     }
   printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
   printf("\t\tset 'hello' to 'a' for %d: %s\n",
@@ -112,7 +92,6 @@ int main(int ac, char **av)
 	 0, (char *)my_memset(str1, 'a', 0));
   printf("\t\tset 'hello' to 'a' for %d: %s\n",
   1, (char *)my_memset(str1, 'a', 1));
-
   printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
   printf("\t\tset 'hello' to 'a' for %d: %s\n",
 	 3, (char *)memset(str2, 'a', 3));
@@ -120,10 +99,11 @@ int main(int ac, char **av)
 	 0, (char *)memset(str3, 'a', 0));
   printf("\t\tset 'hello' to 'a' for %d: %s\n",
 	 1, (char *)memset(str3, 'a', 1));
-
-  //MEMCPY
+}
+void	my_memcpy_test(void *handle)
+{
   void *(*my_memcpy)(void *src, void *dest, size_t n);
-  char strcpy[]="hello";
+  char strcpy[] ="hello";
   char strcpy1[]="hello";
   char strcpy2[]="hello";
   char strcpy3[]="hello";
@@ -133,7 +113,7 @@ int main(int ac, char **av)
   if ((my_memcpy = dlsym(handle, "memcpy")) == NULL)
     {
       printf("Can't load memcpy\n");
-      return (0);
+      return ;
     }
   printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
   printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
@@ -142,7 +122,6 @@ int main(int ac, char **av)
 	 0, (char *)my_memcpy(strcpy1, strsrc, 0));
   printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
 	 1, (char *)my_memcpy(strcpy1, strsrc, 1));
-
   printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
   printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
 	 3, (char *)memcpy(strcpy2, strsrc, 3));
@@ -150,9 +129,10 @@ int main(int ac, char **av)
 	 0, (char *)memcpy(strcpy3, strsrc, 0));
   printf("\t\tset 'hello' to 'bonjour' for %d: %s\n",
 	 1, (char *)memcpy(strcpy3, strsrc, 1));
+}
 
-
-  //MEMMOVE
+void	my_memmove_test(void *handle)
+{
   void *(*my_memmove)(void *src, void *dest, size_t n);
   char strmemove[]="Memmove can be very useful......";
   char strmemove1[]="Memmove can be very useful......";
@@ -164,32 +144,31 @@ int main(int ac, char **av)
   if ((my_memmove = dlsym(handle, "memmove")) == NULL)
     {
       printf("Can't load memmove\n");
-      return (0);
+      return;
     }
   printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
   my_memmove(strmemove1 + 20, strmemove1 + 15, 11);
-  printf("\t\tmove bytes from 20 to 15 for '%s': %s\n",
-	 strmemove, strmemove1);
+  printf("\t\tmove bytes from 20 to 15 for '%s': %s\n", strmemove, strmemove1);
   my_memmove(strmemove2 + 15, strmemove2 + 20, 11);
-  printf("\t\tmove 12 bytes from 15 to 20 for '%s': %s\n",
-	 strmemove, strmemove2);
-
+  printf("\t\tmove 12 bytes from 15 to 20 for '%s': %s\n"
+	 ,strmemove, strmemove2);
   printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
   memmove(strmemove3 + 20, strmemove3 + 15, 11);
-  printf("\t\tmove bytes from 20 to 15 for '%s': %s\n",
-	 strmemove, strmemove3);
+  printf("\t\tmove bytes from 20 to 15 for '%s': %s\n", strmemove, strmemove3);
   memmove(strmemove4 + 15, strmemove4 + 20, 11);
-  printf("\t\tmove 12 bytes from 15 to 20 for '%s': %s\n",
-	 strmemove, strmemove4);
+  printf("\t\tmove 12 bytes from 15 to 20 for '%s': %s\n"
+	 ,strmemove, strmemove4);
+}
 
-  //STRNCMP
+void	my_strncmp_test(void *handle)
+{
   int (*my_strncmp)(const char *s, const char *s2, size_t n);
 
   printf(GREEN_BOLD_INTENS"STRNCMP:\n"CLEAR);
   if ((my_strncmp = dlsym(handle, "strncmp")) == NULL)
     {
       printf("Can't load strncmp\n");
-      return (0);
+      return ;
     }
   printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
   printf("\t\tcompare 'abac' with 'abbc' for %d bytes = %d\n",
@@ -200,7 +179,6 @@ int main(int ac, char **av)
 	 10, my_strncmp("abac", "abac", 10));
   printf("\t\tcompare 'abac' with 'abac' for %d bytes = %d\n",
 	 0, my_strncmp("abac", "abac", 0));
-
   printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
   printf("\t\tcompare 'abac' with 'abbc' for %d bytes = %d\n",
 	 2, strncmp("abac", "abbc", 2));
@@ -210,16 +188,17 @@ int main(int ac, char **av)
 	 10, strncmp("abac", "abac", 10));
   printf("\t\tcompare 'abac' with 'abac' for %d bytes = %d\n",
 	 0, strncmp("abac", "abac", 0));
+}
 
-
-  //STRCASECMP
+void	my_strcasecmp_test(void *handle)
+{
   int (*my_strcasecmp)(const char *s, const char *s2);
 
   printf(GREEN_BOLD_INTENS"STRCASECMP:\n"CLEAR);
   if ((my_strcasecmp = dlsym(handle, "strcasecmp")) == NULL)
     {
       printf("Can't load strcasecmp\n");
-      return (0);
+      return ;
     }
   printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
   printf("\t\tcompare 'abac' with 'ABAC' = %d\n",
@@ -228,7 +207,6 @@ int main(int ac, char **av)
 	 my_strcasecmp("abac", "aBaB"));
   printf("\t\tcompare 'aba' with 'ABaC' = %d\n",
 	 my_strcasecmp("aba", "ABaC"));
-
   printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
   printf("\t\tcompare 'abac' with 'ABAC' = %d\n",
 	 strcasecmp("abac", "ABAC"));
@@ -236,8 +214,10 @@ int main(int ac, char **av)
 	 strcasecmp("abac", "aBaB"));
   printf("\t\tcompare 'aba' with 'ABaC' = %d\n",
 	 strcasecmp("aba", "ABaC"));
+}
 
-  //RINDEX
+void	my_rindex_test(void *handle)
+{
   char *str4="abac";
   char *res_index;
   char *(*my_rindex)(const char *s, int c);
@@ -246,44 +226,38 @@ int main(int ac, char **av)
   if ((my_rindex = dlsym(handle, "rindex")) == NULL)
     {
       printf("Can't load rindex\n");
-      return (0);
+      return ;
     }
   printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
   res_index = my_rindex(str4, 'a');
-  printf("\t\trindex 'a' in 'abac': %s\n",
-	 res_index ? res_index :"NULL");
+  printf("\t\trindex 'a' in 'abac': %s\n", res_index ? res_index :"NULL");
   res_index = my_rindex(str4, '\0');
-  printf("\t\trindex '\\0' in 'abac': %s\n",
-	 res_index ? res_index :"NULL");
+  printf("\t\trindex '\\0' in 'abac': %s\n", res_index ? res_index :"NULL");
   res_index = my_rindex(str4, 'd');
-  printf("\t\trindex 'd' in abac: %s\n",
-	 res_index ? res_index :"NULL");
-
+  printf("\t\trindex 'd' in abac: %s\n", res_index ? res_index :"NULL");
   printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
   res_index = rindex(str4, 'a');
-  printf("\t\trindex 'a' in 'abac': %s\n",
-	 res_index ? res_index :"NULL");
+  printf("\t\trindex 'a' in 'abac': %s\n", res_index ? res_index :"NULL");
   res_index = rindex(str4, '\0');
-  printf("\t\trindex '\\0' in 'abac': %s\n",
-	 res_index ? res_index :"NULL");
+  printf("\t\trindex '\\0' in 'abac': %s\n", res_index ? res_index :"NULL");
   res_index = rindex(str4, 'd');
-  printf("\t\trindex 'd' in abac: %s\n",
-	 res_index ? res_index :"NULL");
+  printf("\t\trindex 'd' in abac: %s\n", res_index ? res_index :"NULL");
+}
 
-
-  //STRSTR
+void	my_strstr_test(void *handle)
+{
   char *(*my_strstr)(const char *hay, const char *needle);
   char str_str1[]="abbcabacab";
   char str_str2[]="bac";
   char str_str3[]="cabb";
   char *res_str;
-
+  char *test;
 
   printf(GREEN_BOLD_INTENS"STRSTR:\n"CLEAR);
   if ((my_strstr = dlsym(handle, "strstr")) == NULL)
     {
       printf("Can't load strstr\n");
-      return (0);
+      return ;
     }
   printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
   res_str = my_strstr(str_str1, str_str2);
@@ -292,7 +266,6 @@ int main(int ac, char **av)
   res_str = my_strstr(str_str1, str_str3);
   printf("\t\tstrstr: haystack '%s';needle '%s'; res '%s'\n",
 	 str_str1, str_str3, res_str ? res_str : "NULL");
-
   printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
   res_str = strstr(str_str1, str_str2);
   printf("\t\tstrstr: haystack '%s';needle '%s'; res '%s'\n",
@@ -301,7 +274,31 @@ int main(int ac, char **av)
   printf("\t\tstrstr: haystack '%s';needle '%s'; res '%s'\n",
 	 str_str1, str_str3, res_str ? res_str : "NULL");
 
-  //STRPBRK
+  printf("NEW TEST\n\n");
+  test = my_strstr("bac", "bac");
+  if (test == NULL)
+    printf("ok\n");
+  else
+    printf("%s", test);
+  test = strstr("bac", "bac");
+  if (test == NULL)
+    printf("ok\n");
+  else
+    printf("%s", test);
+  test = my_strstr("bac", "");
+  if (test == NULL)
+    printf("ok\n");
+  else
+    printf("%s", test);
+  test = strstr("bac", "");
+  if (test == NULL)
+    printf("ok\n");
+  else
+    printf("%s", test);
+}
+
+void	my_strpbrk_test(void *handle)
+{
   char *strpbrk1="I look in my sentence";
   char *strpbrk2="Je cherche dans ma phrase";
   char *strpbrk3="try";
@@ -313,9 +310,8 @@ int main(int ac, char **av)
   if ((my_strpbrk = dlsym(handle, "strpbrk")) == NULL)
     {
       printf("Can't load strpbrk\n");
-      return (0);
+      return ;
     }
-
   printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
   res_strpbrk = my_strpbrk(strpbrk1, strpbrk3);
   printf("\t\tstrpbrk '%s' in '%s': %s\n",
@@ -326,7 +322,6 @@ int main(int ac, char **av)
   res_strpbrk = my_strpbrk(strpbrk2, strpbrk4);
   printf("\t\tstrpbrk '%s' in '%s': %s\n",
   strpbrk4, strpbrk2, res_strpbrk ? res_strpbrk :"NULL");
-
   printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
   res_strpbrk = strpbrk(strpbrk1, strpbrk3);
   printf("\t\tstrpbrk '%s' in '%s': %s\n",
@@ -337,9 +332,10 @@ int main(int ac, char **av)
   res_strpbrk = strpbrk(strpbrk2, strpbrk4);
   printf("\t\tstrpbrk '%s' in '%s': %s\n",
 	 strpbrk4, strpbrk2, res_strpbrk ? res_strpbrk :"NULL");
+}
 
-
-    //STRCSPN
+void	my_strcspn_test(void *handle)
+{
   char *strcspn1="try in my sentence";
   char *strcspn2="Je cherche dans ma phrase";
   char *strcspn3="try";
@@ -351,9 +347,8 @@ int main(int ac, char **av)
   if ((my_strcspn = dlsym(handle, "strcspn")) == NULL)
     {
       printf("Can't load strcspn\n");
-      return (0);
+      return ;
     }
-
   printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
   res_strcspn = my_strcspn(strcspn1, strcspn3);
   printf("\t\tstrcspn '%s' in '%s': %lu\n", strcspn3, strcspn1, res_strcspn);
@@ -361,7 +356,6 @@ int main(int ac, char **av)
   printf("\t\tstrcspn '%s' in '%s': %lu\n", strcspn3, strcspn2, res_strcspn);
   res_strcspn = my_strcspn(strcspn2, strcspn4);
   printf("\t\tstrcspn '%s' in '%s': %lu\n", strcspn4, strcspn2, res_strcspn);
-
   printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
   res_strcspn = strcspn(strcspn1, strcspn3);
   printf("\t\tstrcspn '%s' in '%s': %lu\n", strcspn3, strcspn1, res_strcspn);
@@ -369,7 +363,29 @@ int main(int ac, char **av)
   printf("\t\tstrcspn '%s' in '%s': %lu\n", strcspn3, strcspn2, res_strcspn);
   res_strcspn = strcspn(strcspn2, strcspn4);
   printf("\t\tstrcspn '%s' in '%s': %lu\n", strcspn4, strcspn2, res_strcspn);
+}
 
-  //CLOSE
+int main(int ac, char **av)
+{
+  void *handle;
+
+  printf(GREEN_BOLD_INTENS"ASM TEST\n"CLEAR);
+  if ((handle = dlopen("./libasm.so", RTLD_LAZY)) == NULL)
+    {
+      printf("Can't open lib\n");
+      return (0);
+    }
+  my_strlen_test(handle);
+  my_strchr_test(handle);
+  my_strcmp_test(handle);
+  my_strncmp_test(handle);
+  my_strcasecmp_test(handle);
+  my_memset_test(handle);
+  my_rindex_test(handle);
+  my_memcpy_test(handle);
+  my_strstr_test(handle);
+  my_memmove_test(handle);
+  my_strpbrk_test(handle);
+  my_strcspn_test(handle);
   dlclose(handle);
 }
