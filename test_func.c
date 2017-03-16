@@ -266,6 +266,12 @@ void	my_strstr_test(void *handle)
   res_str = my_strstr(str_str1, str_str3);
   printf("\t\tstrstr: haystack '%s';needle '%s'; res '%s'\n",
 	 str_str1, str_str3, res_str ? res_str : "NULL");
+  res_str = my_strstr(str_str1, "");
+  printf("\t\tstrstr: haystack '%s';needle '%s'; res '%s'\n",
+	 str_str1, "", res_str ? res_str : "NULL");
+  res_str = my_strstr(str_str1, "acab");
+  printf("\t\tstrstr: haystack '%s';needle '%s'; res '%s'\n",
+	 str_str1, "acab", res_str ? res_str : "NULL");
   printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
   res_str = strstr(str_str1, str_str2);
   printf("\t\tstrstr: haystack '%s';needle '%s'; res '%s'\n",
@@ -273,28 +279,12 @@ void	my_strstr_test(void *handle)
   res_str = strstr(str_str1, str_str3);
   printf("\t\tstrstr: haystack '%s';needle '%s'; res '%s'\n",
 	 str_str1, str_str3, res_str ? res_str : "NULL");
-
-  printf("NEW TEST\n\n");
-  test = my_strstr("bac", "bac");
-  if (test == NULL)
-    printf("ok\n");
-  else
-    printf("%s", test);
-  test = strstr("bac", "bac");
-  if (test == NULL)
-    printf("ok\n");
-  else
-    printf("%s", test);
-  test = my_strstr("bac", "");
-  if (test == NULL)
-    printf("ok\n");
-  else
-    printf("%s", test);
-  test = strstr("bac", "");
-  if (test == NULL)
-    printf("ok\n");
-  else
-    printf("%s", test);
+  res_str = strstr(str_str1, "");
+  printf("\t\tstrstr: haystack '%s';needle '%s'; res '%s'\n",
+	 str_str1, "", res_str ? res_str : "NULL");
+  res_str = strstr(str_str1, "acab");
+  printf("\t\tstrstr: haystack '%s';needle '%s'; res '%s'\n",
+	 str_str1, "acab", res_str ? res_str : "NULL");
 }
 
 void	my_strpbrk_test(void *handle)
