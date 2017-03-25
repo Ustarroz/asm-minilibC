@@ -1,15 +1,19 @@
-global strlen:function
-global strcmp:function
-global strncmp:function
-global strcasecmp:function
-global strchr:function
-global memset:function
-global memcpy:function
-global memmove:function
-global rindex:function
-global strstr:function
-global strpbrk:function
-global strcspn:function		
+BITS 64
+	
+global strlen
+global strcmp
+global strncmp
+global strcasecmp
+global strchr
+global memset
+global memcpy
+global memmove
+global rindex
+global strstr
+global strpbrk
+global strcspn
+global write
+global read
 section .text
 
 	;; strlen
@@ -411,4 +415,18 @@ strcspn_index_loop:
 strcspn_index_end:
 	xor rax,rax
 	mov rax,r8
+	ret
+
+	;; write
+
+write:
+	xor rax,rax
+	mov rax,1
+	syscall
+	ret
+
+	;; read
+read:
+	xor rax,rax
+	syscall
 	ret

@@ -355,6 +355,54 @@ void	my_strcspn_test(void *handle)
   printf("\t\tstrcspn '%s' in '%s': %lu\n", strcspn4, strcspn2, res_strcspn);
 }
 
+void	my_write_test(void *handle)
+{
+  size_t (*my_write)(int fd, const void *buf, size_t count);
+
+  printf(GREEN_BOLD_INTENS"WRITE:\n"CLEAR);
+  if ((my_write = dlsym(handle, "write")) == NULL)
+    {
+      printf("Can't load write\n");
+      return ;
+    }
+  printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
+  printf("\t\twrite 3 bytes of 'abac' in output => %d bytes writed\n",
+	 my_write(1, "abac", 3));
+  printf("\t\twrite 4 bytes of 'abac' in output => %d bytes writed\n",
+	 my_write(1, "abac", 4));
+  printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
+  printf("\t\twrite 3 bytes of 'abac' in output => %d bytes writed\n",
+	 write(1, "abac", 3));
+  printf("\t\twrite 4 bytes of 'abac' in output => %d bytes writed\n",
+	 write(1, "abac", 4));
+}
+
+void	my_read_test(void *handle)
+{
+  size_t (*my_read)(int fd, const void *buf, size_t count);
+  char buf[10] = {0};
+  size_t out;
+
+  printf(GREEN_BOLD_INTENS"READ:\n"CLEAR);
+  if ((my_read = dlsym(handle, "read")) == NULL)
+    {
+      printf("Can't load read\n");
+      return ;
+    }
+  printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
+  printf("\t\tRead in input:\n");
+  out = my_read(0, buf, 4);
+  buf[4] = 0;
+  printf("\t\tRead for 4 bytes the input: res => %s in %lu byte\n",
+	 buf, out);
+  printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
+  printf("\t\tRead in input:\n");
+  out = my_read(0, buf, 4);
+  buf[4] = 0;
+  printf("\t\tRead for 4 bytes the input: res => %s in %lu byte\n",
+	 buf, out);
+}
+
 int main(int ac, char **av)
 {
   void *handle;
@@ -377,5 +425,7 @@ int main(int ac, char **av)
   my_memmove_test(handle);
   my_strpbrk_test(handle);
   my_strcspn_test(handle);
+  my_write_test(handle);
+  my_read_test(handle);
   dlclose(handle);
 }
