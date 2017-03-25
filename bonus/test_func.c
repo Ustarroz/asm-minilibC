@@ -366,14 +366,14 @@ void	my_write_test(void *handle)
       return ;
     }
   printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
-  printf("\t\twrite 3 bytes of 'abac' in output => %d bytes writed\n",
+  printf("\t\twrite 3 bytes of 'abac' in output => %d bytes written\n",
 	 my_write(1, "abac", 3));
-  printf("\t\twrite 4 bytes of 'abac' in output => %d bytes writed\n",
+  printf("\t\twrite 4 bytes of 'abac' in output => %d bytes written\n",
 	 my_write(1, "abac", 4));
   printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
-  printf("\t\twrite 3 bytes of 'abac' in output => %d bytes writed\n",
+  printf("\t\twrite 3 bytes of 'abac' in output => %d bytes written\n",
 	 write(1, "abac", 3));
-  printf("\t\twrite 4 bytes of 'abac' in output => %d bytes writed\n",
+  printf("\t\twrite 4 bytes of 'abac' in output => %d bytes written\n",
 	 write(1, "abac", 4));
 }
 
@@ -390,16 +390,16 @@ void	my_read_test(void *handle)
       return ;
     }
   printf(RED_BOLD_INTENS"\tASM\n"CLEAR);
-  printf("\t\tRead in input:\n");
+  printf("\t\tType what you want:\n");
   out = my_read(0, buf, 4);
   buf[4] = 0;
-  printf("\t\tRead for 4 bytes the input: res => %s in %lu byte\n",
+  printf("\t\tRead for 4 bytes the input: res => '%s' in %lu bytes\n",
 	 buf, out);
   printf(RED_BOLD_INTENS"\tEXPECTED\n"CLEAR);
-  printf("\t\tRead in input:\n");
+  printf("\t\tType what you want:\n");
   out = my_read(0, buf, 4);
   buf[4] = 0;
-  printf("\t\tRead for 4 bytes the input: res => %s in %lu byte\n",
+  printf("\t\tRead for 4 bytes the input: res => '%s' in %lu bytes\n",
 	 buf, out);
 }
 
@@ -408,7 +408,7 @@ int main(int ac, char **av)
   void *handle;
 
   printf(GREEN_BOLD_INTENS"ASM TEST\n"CLEAR);
-  if ((handle = dlopen("./libasm.so", RTLD_LAZY)) == NULL)
+  if ((handle = dlopen("../libasm.so", RTLD_LAZY)) == NULL)
     {
       printf("Can't open lib\n");
       return (0);

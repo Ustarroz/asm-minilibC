@@ -1,12 +1,15 @@
 #!/usr/bin/zsh
 ##shell for trying the main test
 
+cd ..;
 make fclean;
 make;
+cd bonus;
 rm -f asm_test;
 gcc test_func.c -o asm_test -ldl;
-echo "\n\n"
+echo "\n\n";
 ./asm_test $@;
-echo "\n\n"
-make fclean;
+echo "\n\n";
 rm -f asm_test;
+cd .. && make fclean;
+cd bonus;
